@@ -1,12 +1,14 @@
 import Document from '@tiptap/extension-document'
+import FontFamily from '@tiptap/extension-font-family'
+import { Color } from '@tiptap/extension-color'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import TextStyle from '@tiptap/extension-text-style'
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
+import React from 'react'
 import {
   FaBold,
   FaHeading,
@@ -20,7 +22,8 @@ import {
   FaUndo,
   FaFont,
 } from "react-icons/fa";
-import ImTextColor from "react-icons/im"
+import {FaX} from "react-icons/fa6";
+
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -92,22 +95,61 @@ const MenuBar = ({ editor }) => {
         >
           <FaQuoteLeft />
         </button>
-        <button>
-          <ImTextColor />
-        </button>
-        <button>
+        <button 
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={editor.isActive("bold") ? "is_active" : ""}>
           <FaFont />
         </button>
-      </div>
-      <div>
+        <input
+          type="color"
+          onInput={event => editor.chain().focus().setColor(event.target.value).run()}
+          value={editor.getAttributes('textStyle').color}
+        />
+        <button onClick={() => editor.chain().focus().unsetColor().run()}>
+          <FaX />
+        </button>
         <button onClick={() => editor.chain().focus().undo().run()}>
           <FaUndo />
         </button>
         <button onClick={() => editor.chain().focus().redo().run()}>
           <FaRedo />
         </button>
+        <button
+          onClick={() => editor.chain().focus().setFontFamily('Rubik').run()}
+          className={
+          editor.isActive('textStyle', { fontFamily: 'Rubik' }) ? 'is-active' : ''}>
+          Rubik
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setFontFamily('Open Sans').run()}
+          className={
+          editor.isActive('textStyle', { fontFamily: 'Open Sans' }) ? 'is-active' : ''}>
+          Open Sans
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setFontFamily('Noto Sans').run()}
+          className={
+          editor.isActive('textStyle', { fontFamily: 'Noto Sans' }) ? 'is-active' : ''}>
+          Noto Sans
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setFontFamily('Noto Serif').run()}
+          className={
+          editor.isActive('textStyle', { fontFamily: 'Noto Serif' }) ? 'is-active' : ''}>
+          Noto Serif
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setFontFamily('Roboto Mono').run()}
+          className={
+          editor.isActive('textStyle', { fontFamily: 'Roboto Mono' }) ? 'is-active' : ''}>
+          Roboto Mono
+        </button>
+        <button onClick={() => editor.chain().focus().unsetFontFamily().run()}>
+          RemoveFont
+        </button>        
       </div>
     </div>
+
   );
 };
 
