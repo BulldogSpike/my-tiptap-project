@@ -1,12 +1,17 @@
-import Tiptap from "./Tiptap.jsx";
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Details from "./components/Details";
+import { Tiptap } from "./components/Tiptap";
 
-const App = () => {
+function App() {
+  const [description, setDescription] = useState("");
+
   return (
     <div className="App">
-      <Tiptap />
+      <Tiptap setDescription={setDescription} />
+      <Details description={description} />
     </div>
   );
-};
+}
 
 export default App;
