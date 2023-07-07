@@ -95,11 +95,6 @@ const MenuBar = ({ editor }) => {
         >
           <FaQuoteLeft />
         </button>
-        <button 
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is_active" : ""}>
-          <FaFont />
-        </button>
         <input
           type="color"
           onInput={event => editor.chain().focus().setColor(event.target.value).run()}
