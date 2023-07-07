@@ -83,10 +83,10 @@
   align-items: center;
   justify-content: space-between;
 }
-.menuBar button {
+.menuBar button, input {
   font-size: 18px;
   margin: 7px;
-  margin-right: 15px;
+  margin-right: 11px;
   outline: none;
   border: none;
   background: none;
