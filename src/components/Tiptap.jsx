@@ -1,6 +1,12 @@
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import TextStyle from '@tiptap/extension-text-style'
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/lib/css/styles.css";
 import {
   FaBold,
   FaHeading,
@@ -12,7 +18,9 @@ import {
   FaStrikethrough,
   FaUnderline,
   FaUndo,
+  FaFont,
 } from "react-icons/fa";
+import ImTextColor from "react-icons/im"
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -84,6 +92,12 @@ const MenuBar = ({ editor }) => {
         >
           <FaQuoteLeft />
         </button>
+        <button>
+          <ImTextColor />
+        </button>
+        <button>
+          <FaFont />
+        </button>
       </div>
       <div>
         <button onClick={() => editor.chain().focus().undo().run()}>
@@ -99,7 +113,7 @@ const MenuBar = ({ editor }) => {
 
 export const Tiptap = ({ setDescription }) => {
   const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [StarterKit, Document, Underline, Paragraph, Text, TextStyle, Color, FontFamily],
     content: ``,
 
     onUpdate: ({ editor }) => {
