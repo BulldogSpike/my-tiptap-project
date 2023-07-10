@@ -7,7 +7,14 @@ import TextStyle from '@tiptap/extension-text-style'
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import Code from '@tiptap/extension-code'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import "react-color-palette/lib/css/styles.css";
+import css from 'highlight.js/lib/languages/css'
+import js from 'highlight.js/lib/languages/javascript'
+import ts from 'highlight.js/lib/languages/typescript'
+import html from 'highlight.js/lib/languages/xml'
+import { lowlight } from 'lowlight'
 import React from 'react'
 import {
   FaBold,
@@ -21,9 +28,15 @@ import {
   FaUnderline,
   FaUndo,
   FaFont,
+  FaCode,
+  FaColumns,
 } from "react-icons/fa";
 import {FaX} from "react-icons/fa6";
 
+lowlight.registerLanguage('html', html)
+lowlight.registerLanguage('css', css)
+lowlight.registerLanguage('js', js)
+lowlight.registerLanguage('ts', ts)
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -90,6 +103,18 @@ const MenuBar = ({ editor }) => {
           <FaListOl />
         </button>
         <button
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          className={editor.isActive('code') ? 'is-active' : ''}
+        >
+          <FaCode />
+        </button> 
+        <button
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          className={editor.isActive('codeBlock') ? 'is-active' : ''}
+        >
+          <FaColumns />
+        </button>
+        <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editor.isActive("blockquote") ? "is_active" : ""}
         >
@@ -115,33 +140,10 @@ const MenuBar = ({ editor }) => {
           editor.isActive('textStyle', { fontFamily: 'Rubik' }) ? 'is-active' : ''}>
           Rubik
         </button>
-        <button
-          onClick={() => editor.chain().focus().setFontFamily('Open Sans').run()}
-          className={
-          editor.isActive('textStyle', { fontFamily: 'Open Sans' }) ? 'is-active' : ''}>
-          Open Sans
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setFontFamily('Noto Sans').run()}
-          className={
-          editor.isActive('textStyle', { fontFamily: 'Noto Sans' }) ? 'is-active' : ''}>
-          Noto Sans
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setFontFamily('Noto Serif').run()}
-          className={
-          editor.isActive('textStyle', { fontFamily: 'Noto Serif' }) ? 'is-active' : ''}>
-          Noto Serif
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setFontFamily('Roboto Mono').run()}
-          className={
-          editor.isActive('textStyle', { fontFamily: 'Roboto Mono' }) ? 'is-active' : ''}>
-          Roboto Mono
-        </button>
         <button onClick={() => editor.chain().focus().unsetFontFamily().run()}>
           RemoveFont
-        </button>        
+        </button>
+    
       </div>
     </div>
 
@@ -150,7 +152,10 @@ const MenuBar = ({ editor }) => {
 
 export const Tiptap = ({ setDescription }) => {
   const editor = useEditor({
-    extensions: [StarterKit, Document, Underline, Paragraph, Text, TextStyle, Color, FontFamily],
+    extensions: [StarterKit, Document, Underline, Paragraph, Text, TextStyle, Color, FontFamily, Code, CodeBlockLowlight.configure({
+      lowlight,
+      }),
+    ],
     content: ``,
 
     onUpdate: ({ editor }) => {
